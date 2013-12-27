@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout.LayoutParams;
 public class Store extends Activity {
 
 	ArrayList<Button> tagButtons = new ArrayList<Button>();
+	Bank ideaBank = new Bank(Store.this, "ideabank", null, 1);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,13 +45,24 @@ public class Store extends Activity {
 	{
 		@Override
 		public void onClick(View view) {
+			Log.d("Store", "savebuttonclicked");
 			EditText titleInput = (EditText) findViewById(R.id.titleInput);
 			EditText ideaInput = (EditText) findViewById(R.id.ideaInput);
 			
 			Editable title = titleInput.getText();
 			Editable idea = ideaInput.getText();
+
+			ArrayList<String> tags= new ArrayList<String>();
 			
-			//save in db
+			for(Button tagButton: tagButtons)
+			{
+				if(tagButton.getVisibility()==View.VISIBLE)
+				{
+					tags.add(tagButton.getText().toString());
+				}
+			}
+			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString());
+			ideaBank.verifyInput(ideaIn,tags);
 		}
 	}
 	class OnTagClickListener implements OnClickListener
@@ -120,5 +133,4 @@ public class Store extends Activity {
 		}
 		return tagWords;
 	}
-	
 }
