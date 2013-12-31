@@ -2,6 +2,8 @@ package com.example.ideabank;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -62,6 +64,8 @@ public class Store extends Activity {
 				}
 			}
 			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString());
+			JSONObject ideaJson = API.ideaEntry2JSON(ideaIn);
+			new API().execute(ideaJson);
 			ideaBank.verifyInput(ideaIn,tags);
 		}
 	}
