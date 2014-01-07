@@ -86,5 +86,16 @@ public class API extends AsyncTask<JSONObject, Void, JSONObject>{
 	    Log.d("platform", reply);
 	    return replyJson;
 	}
-
+	@Override
+	protected void onPostExecute(JSONObject replyJson) {
+	    Integer nMatches = 0;
+		try {
+			nMatches = (Integer)replyJson.get("numDuplicates");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    Uniqueness.handleResult(nMatches);
+		super.onPostExecute(replyJson);
+	}
 }

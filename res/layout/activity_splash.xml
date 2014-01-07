@@ -39,4 +39,36 @@
         android:textColor="@color/Blue"
         android:textSize="50sp" />
 
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="username"
+        android:inputType="textEmailAddress" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/login"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/password"
+        android:layout_below="@+id/password"
+        android:text="Login" />
+
 </RelativeLayout>

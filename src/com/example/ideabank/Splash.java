@@ -3,9 +3,11 @@ package com.example.ideabank;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 
 public class Splash extends Activity {
 
@@ -14,7 +16,7 @@ public class Splash extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_splash);
-		new Handler().postDelayed(new Runnable(){
+/*		new Handler().postDelayed(new Runnable(){
 
 			@Override
 			public void run() {
@@ -23,7 +25,9 @@ public class Splash extends Activity {
 				finish();
 			}
 		}, 3000);
-
+*/
+		Button loginButton = (Button) findViewById(R.id.login);
+		loginButton.setOnClickListener(new OnLoginClickListener());
 	}
 
 	@Override
@@ -32,5 +36,15 @@ public class Splash extends Activity {
 		getMenuInflater().inflate(R.menu.splash, menu);
 		return true;
 	}
+	class OnLoginClickListener implements OnClickListener
+	{
 
+		@Override
+		public void onClick(View arg0) {
+			Intent intent = new Intent(Splash.this,Store.class);
+			startActivity(intent);
+			finish();
+		}
+		
+	}
 }

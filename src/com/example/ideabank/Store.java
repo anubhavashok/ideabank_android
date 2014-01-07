@@ -1,10 +1,12 @@
 package com.example.ideabank;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -65,8 +67,12 @@ public class Store extends Activity {
 			}
 			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString());
 			JSONObject ideaJson = API.ideaEntry2JSON(ideaIn);
-			new API().execute(ideaJson);
-			ideaBank.verifyInput(ideaIn,tags);
+			
+			Intent intent = new Intent(Store.this,Uniqueness.class);
+			intent.putExtra("TAGS", tags);
+			intent.putExtra("IDEA_ENTRY_JSON", ideaJson.toString());
+			Store.this.startActivity(intent);
+			//ideaBank.verifyInput(ideaIn,tags);
 		}
 	}
 	class OnTagClickListener implements OnClickListener
