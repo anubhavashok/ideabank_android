@@ -41,7 +41,7 @@ public class API extends AsyncTask<JSONObject, Void, JSONObject>{
 	protected JSONObject doInBackground(JSONObject... ideaJsonIn) {
 		
 		//TODO replace url with real url
-		String url = "http://192.168.0.12:3000/ideas";
+		String url = "http://thawing-lake-8533.herokuapp.com/ideas";
 		JSONObject ideaJson=ideaJsonIn[0];
 		Log.d("platform",ideaJson.toString());
 	    DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -83,7 +83,7 @@ public class API extends AsyncTask<JSONObject, Void, JSONObject>{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	    
+	    Log.d("platform", reply);
 	    return replyJson;
 	}
 
