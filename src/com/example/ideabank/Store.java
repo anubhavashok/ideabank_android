@@ -1,8 +1,8 @@
 package com.example.ideabank;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -16,12 +16,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 public class Store extends Activity {
 
+	public static int privateCount = 0;
+	public static String first_name = "";
+	public static String last_name = "";
+	public static int userid = -1;
 	ArrayList<Button> tagButtons = new ArrayList<Button>();
 	Bank ideaBank = new Bank(Store.this, "ideabank", null, 1);
 	@Override
@@ -29,7 +34,13 @@ public class Store extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_store);
-
+		
+		CheckBox privateCheckbox = (CheckBox) findViewById(R.id.privateCheckbox);
+		if(privateCount==0)
+		{
+			privateCheckbox.setTextColor(getResources().getColor(R.color.LightGrey));
+			privateCheckbox.setClickable(false);
+		}
 		Button saveButton = (Button) findViewById(R.id.saveButton);
 		saveButton.setOnClickListener(new OnSaveClickListener());
 		
@@ -50,6 +61,7 @@ public class Store extends Activity {
 		@Override
 		public void onClick(View view) {
 			Log.d("Store", "savebuttonclicked");
+			CheckBox privateCheckbox = (CheckBox) findViewById(R.id.privateCheckbox);
 			EditText titleInput = (EditText) findViewById(R.id.titleInput);
 			EditText ideaInput = (EditText) findViewById(R.id.ideaInput);
 			
@@ -65,7 +77,13 @@ public class Store extends Activity {
 					tags.add(tagButton.getText().toString());
 				}
 			}
-			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString());
+			boolean isPrivate = false;
+			if(privateCheckbox.isChecked() && privateCount > 0) 
+			{
+				isPrivate = true;
+				privateCount--;
+			}
+			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString(),isPrivate,userid);
 			JSONObject ideaJson = API.ideaEntry2JSON(ideaIn);
 			
 			Intent intent = new Intent(Store.this,Uniqueness.class);

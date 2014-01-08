@@ -94,7 +94,7 @@ public class Bank extends SQLiteOpenHelper{
 			Cursor ideaCursor = db.rawQuery(sql, null);
 			if(ideaCursor.moveToFirst())
 			{
-				IdeaEntry idea = new IdeaEntry(ideaCursor.getString(1),ideaCursor.getString(2));
+				IdeaEntry idea = new IdeaEntry(ideaCursor.getString(1),ideaCursor.getString(2),false,0);
 				ideas.add(idea);
 			}
 		}
@@ -175,10 +175,14 @@ class IdeaEntry implements Serializable
 {
 	String title;
 	String description;
+	boolean isPrivate;
+	int userid;
 	
-	IdeaEntry(String title, String description)
+	IdeaEntry(String title, String description, boolean isPrivate, int userid)
 	{
 		this.title=title;
 		this.description=description;
+		this.isPrivate=isPrivate;
+		this.userid=userid;
 	}
 }

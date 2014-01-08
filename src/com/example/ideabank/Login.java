@@ -16,33 +16,13 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class API extends AsyncTask<JSONObject, Void, JSONObject>{
-	
-	//create JSON from IdeaEntry
-	public static JSONObject ideaEntry2JSON(IdeaEntry idea)
-	{
-		JSONObject ideaJson = new JSONObject();
-		try {
-			ideaJson.put("private", idea.isPrivate);
-			ideaJson.put("title", idea.title);
-			ideaJson.put("description", idea.description);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return ideaJson;
-	}
-	
-	//send post request to url
-	//public static JSONObject postToServer(JSONObject ideaJson)
-	//{
-			
-	//}
-
+class Login extends AsyncTask<JSONObject, Void, JSONObject>
+{
 	@Override
 	protected JSONObject doInBackground(JSONObject... ideaJsonIn) {
 		
 		//TODO replace url with real url
-		String url = "http://thawing-lake-8533.herokuapp.com/ideas";
+		String url = "http://thawing-lake-8533.herokuapp.com/users";
 		JSONObject ideaJson=ideaJsonIn[0];
 		Log.d("platform",ideaJson.toString());
 	    DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -89,14 +69,7 @@ public class API extends AsyncTask<JSONObject, Void, JSONObject>{
 	}
 	@Override
 	protected void onPostExecute(JSONObject replyJson) {
-	    Integer nMatches = 0;
-		try {
-			nMatches = (Integer)replyJson.get("numDuplicates");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    Uniqueness.handleResult(nMatches);
+	    Splash.handleResult(replyJson);
 		super.onPostExecute(replyJson);
 	}
 }

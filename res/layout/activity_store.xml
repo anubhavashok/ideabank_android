@@ -57,7 +57,7 @@
         android:id="@+id/tagsContainer"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
-        android:layout_above="@+id/saveButton"
+        android:layout_above="@+id/privateCheckbox"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:gravity="top|center" >
@@ -84,5 +84,13 @@
         android:background="@color/LightGrey"
         android:text="Save"
         android:textColor="@color/DarkSlateGray" />
+
+    <CheckBox
+        android:id="@+id/privateCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tagsContainer"
+        android:layout_above="@+id/saveButton"
+        android:text="Private" />
 
 </RelativeLayout>
