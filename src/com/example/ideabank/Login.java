@@ -16,11 +16,11 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
-class Login extends AsyncTask<JSONObject, Void, JSONObject>
+public class Login extends AsyncTask<JSONObject, Void, JSONObject>
 {
 	@Override
 	protected JSONObject doInBackground(JSONObject... ideaJsonIn) {
-		
+
 		//TODO replace url with real url
 		String url = "http://thawing-lake-8533.herokuapp.com/users";
 		JSONObject ideaJson=ideaJsonIn[0];

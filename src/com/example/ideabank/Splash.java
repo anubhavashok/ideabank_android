@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,8 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.ideabank_fragments.NewUserFragment;
 
 public class Splash extends Activity {
 	static Activity thisContext = null;
@@ -65,16 +69,25 @@ public class Splash extends Activity {
 		}
 		
 	}
+	public static JSONObject replyJson;
 	public static void handleResult(JSONObject result)
 	{
-
+		replyJson = result;
 		try {
 			//check if new user
 			if(result.getBoolean("successful"))
 			{
 				if(result.getBoolean("new_user"))
 				{
+			       // get an instance of FragmentTransaction from your Activity
+					FragmentManager fragmentManager = thisContext.getFragmentManager();
+					FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
 					//start first_name and last_name fragment
+					NewUserFragment newUserFragment = new NewUserFragment();
+					
+					fragmentTransaction.add(R.id.fragment_container, newUserFragment);
+					fragmentTransaction.commit();
 					//get and store first_name and last_name
 				}
 				else

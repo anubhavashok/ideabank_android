@@ -47,7 +47,8 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="username"
-        android:inputType="textEmailAddress" >
+        android:inputType="textEmailAddress"
+        android:textColor="@color/yellow" >
 
         <requestFocus />
     </EditText>
@@ -60,7 +61,8 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="@color/yellow" />
 
     <Button
         android:id="@+id/login"
@@ -70,5 +72,16 @@
         android:layout_alignRight="@+id/password"
         android:layout_below="@+id/password"
         android:text="Login" />
+
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/login"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignRight="@+id/password"
+        android:layout_alignTop="@+id/logo" >
+
+    </RelativeLayout>
 
 </RelativeLayout>
