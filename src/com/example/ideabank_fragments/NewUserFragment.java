@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.ideabank.Splash;
 public class NewUserFragment extends Fragment{
 
 	  View view;
+	  ProgressDialog progressDialog;
 	  @Override
 	  public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	      Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class NewUserFragment extends Fragment{
 	        container, false);
 	    Button newAccount = (Button) view.findViewById(R.id.newAccount);
 	    newAccount.setOnClickListener(new OnNewUserClickListener());
+	    
 	    return view;
 	  }
 	  
@@ -48,7 +51,7 @@ public class NewUserFragment extends Fragment{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+		    progressDialog  = ProgressDialog.show(view.getContext(), "Hold on", "Creating your account");
 			new Login().execute(newUserJson);
 			
 		}

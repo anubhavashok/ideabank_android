@@ -13,7 +13,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView1"
+        android:layout_above="@+id/privateCheckboxHint"
         android:layout_centerHorizontal="true"
         android:contentDescription="logo"
         android:src="@drawable/logo_small" />
@@ -29,7 +29,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/privateCheckboxHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout1"
@@ -43,7 +43,7 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/privateCheckboxHint"
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint="username"
@@ -70,8 +70,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/password"
-        android:layout_below="@+id/password"
-        android:text="Login" />
+        android:layout_below="@+id/loginHint"
+        android:text="Login"
+        android:textColor="@color/white" />
 
     <RelativeLayout
         android:id="@+id/fragment_container"
@@ -80,8 +81,19 @@
         android:layout_alignBottom="@+id/login"
         android:layout_alignLeft="@+id/password"
         android:layout_alignRight="@+id/password"
-        android:layout_alignTop="@+id/logo" >
+        android:layout_alignTop="@+id/logo"
+        >
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/loginHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/username"
+        android:layout_below="@+id/password"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/red"
+        android:textSize="11sp" />
 
 </RelativeLayout>

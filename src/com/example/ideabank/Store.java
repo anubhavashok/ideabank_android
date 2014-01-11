@@ -2,24 +2,28 @@ package com.example.ideabank;
 
 import java.util.ArrayList;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class Store extends Activity {
 
@@ -29,6 +33,7 @@ public class Store extends Activity {
 	public static int userid = -1;
 	ArrayList<Button> tagButtons = new ArrayList<Button>();
 	Bank ideaBank = new Bank(Store.this, "ideabank", null, 1);
+	ColorStateList originalHintColors;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,11 +41,24 @@ public class Store extends Activity {
 		setContentView(R.layout.activity_store);
 		
 		CheckBox privateCheckbox = (CheckBox) findViewById(R.id.privateCheckbox);
+		TextView privateCheckboxHint = (TextView) findViewById(R.id.privateCheckboxHint);
+		originalHintColors = privateCheckboxHint.getHintTextColors();
 		if(privateCount==0)
 		{
 			privateCheckbox.setTextColor(getResources().getColor(R.color.LightGrey));
 			privateCheckbox.setClickable(false);
+			privateCheckboxHint.setText("just ran out of private ideas!");
+			privateCheckbox.setOnTouchListener(new OnTouchListener(){
+				@Override
+				public boolean onTouch(View arg0, MotionEvent arg1) {
+					//TODO make activity where idea purchase is possible
+					Toast t= Toast.makeText(Store.this, "Buy more private ideas", 200);
+					t.show();
+					return false;
+				}
+			});
 		}
+		privateCheckboxHint.setText(privateCount+" private ideas remaining.");
 		Button saveButton = (Button) findViewById(R.id.saveButton);
 		saveButton.setOnClickListener(new OnSaveClickListener());
 		
@@ -67,7 +85,36 @@ public class Store extends Activity {
 			
 			Editable title = titleInput.getText();
 			Editable idea = ideaInput.getText();
-
+			titleInput.setOnTouchListener(new OnTouchListener(){
+				@Override
+				public boolean onTouch(View view, MotionEvent event) {
+					TextView thisView = (TextView) view;
+					thisView.setHint("Title");
+					thisView.setHintTextColor(originalHintColors);
+					return false;
+				}
+			});
+			ideaInput.setOnTouchListener(new OnTouchListener(){
+				@Override
+				public boolean onTouch(View view, MotionEvent event) {
+					TextView thisView = (TextView) view;
+					thisView.setHint("Idea");
+					thisView.setHintTextColor(originalHintColors);
+					return false;
+				}
+			});
+			if(title.toString().equals(""))
+			{
+				titleInput.setHint("Title cannot be empty");
+				titleInput.setHintTextColor(getResources().getColor(R.color.red));
+				return;
+			}
+			if(idea.toString().equals(""))
+			{
+				ideaInput.setHint("Idea cannot be empty");
+				ideaInput.setHintTextColor(getResources().getColor(R.color.red));
+				return;
+			}
 			ArrayList<String> tags= new ArrayList<String>();
 			
 			for(Button tagButton: tagButtons)
@@ -80,8 +127,29 @@ public class Store extends Activity {
 			boolean isPrivate = false;
 			if(privateCheckbox.isChecked() && privateCount > 0) 
 			{
+				TextView privateCheckboxHint = (TextView) findViewById(R.id.privateCheckboxHint);
 				isPrivate = true;
 				privateCount--;
+				if(privateCount==0)
+				{
+					privateCheckbox.setTextColor(getResources().getColor(R.color.LightGrey));
+					privateCheckbox.setClickable(false);
+					privateCheckboxHint.setText("just ran out of private ideas!");
+					privateCheckbox.setOnTouchListener(new OnTouchListener(){
+						@Override
+						public boolean onTouch(View arg0, MotionEvent arg1) {
+							Toast t= new Toast(Store.this);
+							t.setText("Buy more private ideas");
+							t.setDuration(200);
+							t.show();
+							return false;
+						}
+					});
+				}
+				else
+				{
+					privateCheckboxHint.setText(privateCount+" private ideas remaining.");
+				}
 			}
 			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString(),isPrivate,userid);
 			JSONObject ideaJson = API.ideaEntry2JSON(ideaIn);

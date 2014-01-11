@@ -93,4 +93,16 @@
         android:layout_above="@+id/saveButton"
         android:text="Private" />
 
+    <TextView
+        android:id="@+id/privateCheckboxHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/privateCheckbox"
+        android:layout_alignBottom="@+id/privateCheckbox"
+        android:layout_toLeftOf="@+id/privateCheckbox"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/red"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp" />
+
 </RelativeLayout>

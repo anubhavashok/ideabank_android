@@ -23,6 +23,8 @@ public class API extends AsyncTask<JSONObject, Void, JSONObject>{
 	{
 		JSONObject ideaJson = new JSONObject();
 		try {
+			assert(Store.userid!=-1);
+			ideaJson.put("userid", Store.userid);
 			ideaJson.put("private", idea.isPrivate);
 			ideaJson.put("title", idea.title);
 			ideaJson.put("description", idea.description);

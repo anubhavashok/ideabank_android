@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,11 +15,13 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.ideabank_fragments.NewUserFragment;
 
 public class Splash extends Activity {
 	static Activity thisContext = null;
+	static ProgressDialog myProgressDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,7 +59,12 @@ public class Splash extends Activity {
 			
 			String usernameString = username.getText().toString();
 			String passwordString = password.getText().toString();
-			
+			if(usernameString.equals("")||passwordString.equals(""))
+			{
+				TextView loginHint = (TextView) findViewById(R.id.loginHint);
+				loginHint.setText("Username and password cannot be blank");
+				return;
+			}
 			JSONObject creds = new JSONObject();
 			try {
 				creds.put("username", usernameString);
@@ -65,13 +73,16 @@ public class Splash extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//myProgressDialog = new ProgressDialog(Splash.this,ProgressDialog.THEME_HOLO_DARK);
+			myProgressDialog = ProgressDialog.show(Splash.this,"Hold on", "Logging in", true);
 			new Login().execute(creds);
 		}
 		
 	}
 	public static JSONObject replyJson;
 	public static void handleResult(JSONObject result)
-	{
+	{			
+		myProgressDialog.dismiss();
 		replyJson = result;
 		try {
 			//check if new user
@@ -108,6 +119,8 @@ public class Splash extends Activity {
 			else
 			{
 				//red line above username, password saying wrong username or password
+				TextView loginHint = (TextView)thisContext.findViewById(R.id.loginHint);
+				loginHint.setText("Username or password not valid!");
 			}
 
 		} catch (JSONException e) {
