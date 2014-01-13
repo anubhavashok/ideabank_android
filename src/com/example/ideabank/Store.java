@@ -10,13 +10,13 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,8 +36,9 @@ public class Store extends Activity {
 	ColorStateList originalHintColors;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		//this.deleteDatabase("ideabank");
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_store);
 		
 		CheckBox privateCheckbox = (CheckBox) findViewById(R.id.privateCheckbox);
@@ -71,14 +72,35 @@ public class Store extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.store, menu);
+/*		MenuItem viewIdeas = (MenuItem) findViewById(R.id.view_ideas);
+		viewIdeas.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				//Create a new activity and display all items
+				return false;
+			}
+		});*/
 		return true;
 	}
-
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId())
+		{
+			case R.id.view_ideas:
+				ArrayList<IdeaEntry> allIdeas = ideaBank.showDB();
+				Intent intent = new Intent(Store.this, ViewIdeas.class);
+				intent.putExtra("ALLIDEAS", allIdeas);
+				startActivity(intent);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	class OnSaveClickListener implements OnClickListener
 	{
 		@Override
 		public void onClick(View view) {
-			Log.d("Store", "savebuttonclicked");
+			//Log.d("Store", "savebuttonclicked");
 			CheckBox privateCheckbox = (CheckBox) findViewById(R.id.privateCheckbox);
 			EditText titleInput = (EditText) findViewById(R.id.titleInput);
 			EditText ideaInput = (EditText) findViewById(R.id.ideaInput);
@@ -153,6 +175,9 @@ public class Store extends Activity {
 			}
 			IdeaEntry ideaIn = new IdeaEntry(title.toString(),idea.toString(),isPrivate,userid);
 			JSONObject ideaJson = API.ideaEntry2JSON(ideaIn);
+			
+			//TODO Store idea in local db
+			ideaBank.storeEntry(ideaIn, tags);
 			
 			Intent intent = new Intent(Store.this,Uniqueness.class);
 			intent.putExtra("TAGS", tags);

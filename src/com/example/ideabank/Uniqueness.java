@@ -35,11 +35,15 @@ public class Uniqueness extends Activity {
 		//Initiate post
 		if(submitOnce)
 		{
+			submitOnce=false;
 			new API().execute(ideaJson);
-			submitOnce = false;
 		}
 	}
-
+	@Override
+	public void onBackPressed() {
+		thisActivity.finish();
+		super.onBackPressed();
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -48,6 +52,7 @@ public class Uniqueness extends Activity {
 	}
 	public static void handleResult(int nMatches)
 	{
+		submitOnce=true;
 		// TODO change to less than a threshold
 		RelativeLayout rootLayout = (RelativeLayout) thisActivity.findViewById(R.id.uniquenessRootView);
 		if(nMatches == 0)

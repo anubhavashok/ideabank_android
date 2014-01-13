@@ -24,7 +24,7 @@ public class Login extends AsyncTask<JSONObject, Void, JSONObject>
 		//TODO replace url with real url
 		String url = "http://thawing-lake-8533.herokuapp.com/users";
 		JSONObject ideaJson=ideaJsonIn[0];
-		Log.d("platform",ideaJson.toString());
+		//Log.d("platform",ideaJson.toString());
 	    DefaultHttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httpost = new HttpPost(url);
 	    StringEntity jsonEntity = null;
@@ -37,7 +37,7 @@ public class Login extends AsyncTask<JSONObject, Void, JSONObject>
 	    httpost.setHeader("Accept", "application/json");
 	    httpost.setHeader("Content-type", "application/json");
 	    try {
-			Log.d("platform",ideaJson.toString());
+			//Log.d("platform",ideaJson.toString());
 		} catch (ParseException e3) {
 			// TODO Auto-generated catch block
 			e3.printStackTrace();
@@ -64,7 +64,7 @@ public class Login extends AsyncTask<JSONObject, Void, JSONObject>
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	    Log.d("platform", reply);
+	    //Log.d("platform", reply);
 	    return replyJson;
 	}
 	@Override

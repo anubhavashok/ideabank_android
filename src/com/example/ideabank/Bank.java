@@ -27,7 +27,7 @@ public class Bank extends SQLiteOpenHelper{
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		db.execSQL("CREATE TABLE tags(id integer primary key,tag text)");
-		db.execSQL("CREATE TABLE ideas(id integer primary key,title text,description text)");
+		db.execSQL("CREATE TABLE ideas(id integer primary key,title text,description text, userid integer, private boolean)");
 		db.execSQL("CREATE TABLE ideatags(iid integer REFERENCES ideas(id), tid integer REFERENCES tags(id))");
 	}
 
@@ -35,7 +35,7 @@ public class Bank extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
 	}
-	public void verifyInput(IdeaEntry inputIdea,ArrayList<String> tags)
+	public void verifyInput(IdeaEntry inputIdea, ArrayList<String> tags)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<String> tagids= new ArrayList<String>();
@@ -71,7 +71,7 @@ public class Bank extends SQLiteOpenHelper{
 						if(count==null) count = 0;
 						count++;
 						
-						Log.d("Store","Idea: "+ iid+" Count:" + count);
+						//Log.d("Store","Idea: "+ iid+" Count:" + count);
 						ideatagmap.put(iid, count);
 					}
 				}
@@ -125,9 +125,10 @@ public class Bank extends SQLiteOpenHelper{
 		if(cursor.moveToFirst())
 		{
 			iid = String.valueOf(cursor.getInt(0));
-			Log.d("Store","idea count: "+iid);
+			//Log.d("Store","idea count: "+iid);
 			iid = String.valueOf(Integer.valueOf(iid) + 1);
-			sql = "INSERT into ideas(title, description) values('"+idea.title+"','"+idea.description+"')";
+			sql = "INSERT into ideas(title, description, userid, private) values('"+idea.title+"','"+idea.description+"',"+idea.userid+",'"+idea.isPrivate+"')";
+			Log.d("Store",sql);
 			db.execSQL(sql);
 		}
 		//check if each tag is unique and update it
@@ -150,25 +151,39 @@ public class Bank extends SQLiteOpenHelper{
 			{
 				tid = cursor.getString(0);
 			}
-			Log.d("Store", "tag count "+ tid);
+			//Log.d("Store", "tag count "+ tid);
 			sql = "INSERT into ideatags(iid,tid) values("+iid+","+tid+")";
 			db.execSQL(sql);
 		}
 		showDB();
 	}
-	public void showDB()
+	public ArrayList<IdeaEntry> showDB()
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		String sql = "SELECT * from ideas";
 		Cursor cursor = db.rawQuery(sql, null);
 		Log.d("Store","showing db");
+		ArrayList<IdeaEntry> allIdeasInDB = new ArrayList<IdeaEntry>();
 		if(cursor.moveToFirst())
 		{
 			do
 			{
-				Log.d("Store", "title: "+cursor.getString(0));
+				String title = cursor.getString(1);
+				String description = cursor.getString(2);
+				String userid = cursor.getString(3);
+				String isPrivate = cursor.getString(4);
+				Log.d("Store", "title: "+ title);
+				Log.d("Store", "description: "+ description);
+				Log.d("Store", "userid: "+ userid);
+				Log.d("Store", "private: "+ isPrivate);
+				if(userid.equals(String.valueOf(Store.userid)))
+				{
+					allIdeasInDB.add(new IdeaEntry(title,description,Boolean.valueOf(isPrivate),Integer.valueOf(userid)));
+				}
+				
 			}while(cursor.moveToNext());
 		}
+		return allIdeasInDB;
 	}
 }
 class IdeaEntry implements Serializable
